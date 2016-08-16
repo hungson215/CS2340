@@ -1,0 +1,62 @@
+@(user:User)(sale: Catalog)(items:java.util.ArrayList[ItemInfo])
+<h2>@user.getUsername/cata.getName</h2>
+  <table class="table table-reponsive table-hover">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Item Description</th>
+      <th>Quantity</th>
+      <th>Barcode</th>
+    </tr>
+  </thead>
+  <tbody>
+  @for(i <- 0 to items.length - 1) {
+    <tr class="itemtag" data-toggle="modal" data-target="#tag">
+      <td class ="itemtag-id" id="id@i">@items.get(i).getId</td>
+      <td class="itemtag-name">@items.get(i).getName</td>
+      <td class ="itemtag-price">@items.get(i).getPrice</td>
+      <td class ="itemtag-des">@items.get(i).getDes</td>
+      <td class ="itemtag-inventory">@items.get(i).getInventory</td>
+      <td><div class ="itemtag-barcode" id="barcode@i"></div></td>
+    </tr>
+  }
+  </tbody>
+  </table>
+<div id="tag" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">X</button>
+        <h4 class="modal-title tag-info tag-title">lksdf;lsdkjlsd</h4>
+      </div>
+      <div class="modal-body">
+        <p class="tag-info tag-price"><strong>Price:$</strong></p>
+        <p class="tag-info tag-des"><strong>Description:</strong>slakdfhaskfh</p>
+        <div class="tag-info tag-barcode">Barcode</div>
+      </div>
+      <div class="modal-footer tag-info">
+        <button class="btn btn-primary tag-print">Print</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/jquery-barcode.min.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/jquery.printElement.min.js")"></script>
+<script>
+  $(document).ready(function () {
+    $(".itemtag").click(function () {
+      $(".tag-title").html($(this).find("td.itemtag-name").text());
+      $(".tag-price").html("<strong>Price:</strong>" + $(this).find("td.itemtag-price").text());
+      $(".tag-des").html("<strong>Description:</strong>" + $(this).find("td.itemtag-des").text());
+      $(".tag-barcode").barcode($(this).find("td.itemtag-id").text(),"code128");
+    });
+    $(".tag-print").click(function () {
+      $(".modal-dialog").print();
+    });
+    @for(i <- 0 to items.length){
+      $("#barcode@i").barcode($("#id@i").text(),"code128");
+    }
+  });
+</script>

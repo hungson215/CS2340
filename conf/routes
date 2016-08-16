@@ -1,0 +1,72 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET     /                           controllers.HomeController.index
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+#register new user
+POST    /register                                       controllers.HomeController.register
+#login
+POST    /main                                           controllers.HomeController.login
+#logout
+GET     /logout                                         controllers.HomeController.logout
+#profile
+POST    /profile/                                       controllers.HomeController.save_profile()
+
+#show main page
+GET     /main/show/:page                                controllers.HomeController.show(page:String)
+#save privillege
+POST    /main/privilege                                controllers.HomeController.savePrivilege()
+
+#update item's info
+GET     /main/update_item/:id                           controllers.HomeController.updateItemPage(id:Int)
+POST    /main/update_item/:id                           controllers.HomeController.updateItem(id:Int)
+
+POST    /main/create_catalog                            controllers.HomeController.createCatalog
+
+#add item to the selected catalog routes
+GET     /main/add_item/:cataid                          controllers.HomeController.addItemPage(cataid:Int)
+POST    /main/add_item/:cataid                          controllers.HomeController.addItem(cataid:Int)
+#process purchase and print the receipt
+POST    /main/purchase                                  controllers.HomeController.purchase()
+GET 	/main/receipt/:id								controllers.HomeController.showReceipt(id:Int)
+#Role assign
+GET     /main/role_assign                               controllers.HomeController.showRoleAssign()
+POST    /main/role_assign                               controllers.HomeController.RoleAssign
+#Sale report detail
+GET     /main/sale_report/:id                           controllers.HomeController.showSaleReportDetails(id:Int)
+
+#Seller sale report
+GET     /main/unsold/:id                                controllers.HomeController.showUnsoldItems(id: Int)
+GET     /main/seller/sale_report                        controllers.HomeController.showSellerSaleReport()
+GET     /main/seller/financial_report                   controllers.HomeController.showSellerFinancialReport()
+GET     /main/clerk/sale_report                         controllers.HomeController.showClerkSaleReport()
+GET     /main/search/:page/:cataid/:query               controllers.HomeController.search(page: String, cataid:Int,query:String)
+GET     /main/search/:query               				controllers.HomeController.searchBuy(query:String)
+GET		/main/add_to_cart/:id							controllers.HomeController.addToCart(id:Int)
+POST	/main/update_cart/:id							controllers.HomeController.updateCart(id:Int)
+#Show financial report for user
+GET     /main/financial_report/:id                      controllers.HomeController.showUserFinancialReport(id:Int)
+
+#Save user privilege
+POST    /main/privilege                                 controllers.HomeController.savePrivilege
+
+#show all item in a catalog
+GET     /main/catalog/:id                               controllers.HomeController.showCatalog(id:Int)
+GET     /main/clerk/catalog/:id                         controllers.HomeController.clerkViewCatalog(id:Int)
+GET     /main/item/:id                                  controllers.HomeController.showItem(id:Int)
+
+#close sales
+GET     /main/close_sale/:id                            controllers.HomeController.closeSale(id:Int)
+#print tag
+GET     /main/print_tag/:id                             controllers.HomeController.printTag(id:Int)
+GET     /main/users                                     controllers.HomeController.showUsers
+
+POST    /main/		                            controllers.HomeController.addDonation
+GET		/main/show/donate									controllers.HomeController.donate
+POST	/main/letter									controllers.HomeController.addDonation
+GET		/main/letter									controllers.HomeController.letter

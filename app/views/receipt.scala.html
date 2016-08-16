@@ -1,0 +1,58 @@
+@(receipt:Receipt)(trans:java.util.ArrayList[Transaction])(items:java.util.HashMap[Integer,ItemInfo])(user:User)
+<div class="row">
+    <ul>
+        <li><h2>Receipt#@receipt.getId</h2></li>
+        <li><h2>Date:@receipt.getDate</h2></li>
+    </ul>
+</div>
+<div class="row">
+    <ul>
+        <li><h4>Name: @user.getUsername</h4></li>
+        <li><h4>Phone: @user.getPhone</h4></li>
+        <li><h4>Email: @user.getEmail</h4></li>
+    </ul>
+</div>
+<div class="row">
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Seller</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(t <- trans){
+                <tr>
+                    <td>@items.get(t.getItemId).getId</td>
+                    <td>@items.get(t.getItemId).getSeller</td>
+                    <td>@items.get(t.getItemId).getName</td>
+                    <td>@items.get(t.getItemId).getDes</td>
+                    <td>@t.getQuantity</td>
+                    <td>@t.getTotalPrice</td>
+                </tr>
+            }
+            <tr>
+                <td>Payment:</td>
+                <td>@user.getPayments.get(receipt.getPaymentId).getType</td>
+                <td></td>
+                <td></td>
+                <td>Total:</td>
+                <td><strong>@receipt.getTotalPrice</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-large btn-primary btn-block form-style" id="done-butt">Done</button>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#done-butt").click(function () {
+            $(".nav-li").removeClass("active");
+            $(".home").addClass("active");
+            $(".data-content").load("@routes.HomeController.show("cart")");
+        });
+    });
+</script>

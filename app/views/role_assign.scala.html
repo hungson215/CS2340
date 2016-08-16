@@ -1,0 +1,111 @@
+@(sales:java.util.ArrayList[Catalog])(users: java.util.ArrayList[User])
+<div class="row">
+  <form>
+    <h2 class="form-style">Role Assignment</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Seller</th>
+          <th>Book Keeper</th>
+          <th>Cashier</th>
+          <th>Clerk</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(c <- sales) {
+          <tr>
+            <td>@c.getId</td>
+            <td>@c.getName</td>
+            <td>
+              <select name = "seller-role-@c.getId">
+                @if(c.getPermissions.getSeller == -1){
+                  <option value="-1" selected>none</option>
+                }
+                @for(u <- users) {
+                  @if(c.getPermissions.getSeller == u.getId) {
+                    <option value="@u.getId" selected>@u.getUsername</option>
+                  } else {
+                      @if(u.isSeller) {
+                          <option value="@u.getId">@u.getUsername</option>
+                      }
+                  }
+                }
+              </select>
+            </td>
+            <td>
+              <select name="bookkeeper-role-@c.getId">
+              @if(c.getPermissions.getBookKeeper == -1){
+                  <option value="-1" selected>none</option>
+                }
+                @for(u <- users) {
+                  @if(c.getPermissions.getBookKeeper == u.getId) {
+                    <option value="@u.getId" selected>@u.getUsername</option>
+                  } else {
+                      @if(u.isBookKeeper){
+                      <option value="@u.getId">@u.getUsername</option>
+                      }
+                  }
+                }
+              </select>
+            </td>
+            <td>
+              <select name="cashier-role-@c.getId">
+              @if(c.getPermissions.getCashier == -1){
+                  <option value="-1" selected>none</option>
+                }
+                @for(u <- users) {
+                  @if(c.getPermissions.getCashier == u.getId) {
+                    <option value="@u.getId" selected>@u.getUsername</option>
+                  } else {
+                      @if(u.isCashier) {
+                          <option value="@u.getId">@u.getUsername</option>
+                      }
+                  }
+                }
+              </select>
+            </td>
+            <td>
+              <select name="clerk-role-@c.getId">
+              @if(c.getPermissions.getClerk == -1){
+                  <option value="-1" selected>none</option>
+                }
+                @for(u <- users) {
+                  @if(c.getPermissions.getClerk == u.getId) {
+                    <option value="@u.getId" selected>@u.getUsername</option>
+                  } else{
+                      @if(u.isClerk) {
+                          <option value="@u.getId">@u.getUsername</option>
+                      }
+                  }
+                }
+              </select>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </form>
+  <button class="btn btn-large btn-block btn-primary form-style" data-toggle="modal" data-target="#added-modal">Save</button>
+    <div id ="added-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content alert-success">
+                <div class="modal-body">
+                    <h3 class="form-style"><p>Saved<i class="glyphicon glyphicon-ok "></i></p></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  $(document).ready(function () {
+      $("#added-modal").on("hidden.bs.modal",function () {
+          var data = $("form").serialize();
+          $.post(encodeURI("/main/role_assign"), data, function () {
+
+              $(".data-content").load("/main/role_assign");
+          });
+      });
+  });
+</script>

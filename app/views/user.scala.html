@@ -1,0 +1,21 @@
+@(Title:String)(message:String)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/style.css")">
+    <script src="@routes.Assets.versioned("javascripts/jquery-3.0.0.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+    <title>@Title</title>
+</head>
+<body>
+    <div class="container">
+        <form class="logout-control" action="@routes.HomeController.logout()" method="get">
+            <h1 >@message</h1>
+            <button class="btn btn-lg btn-primary">Logout</button>
+        </form>
+    </div>
+</body>
+</html>

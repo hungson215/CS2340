@@ -1,0 +1,9 @@
+
+  <div class="container">
+    <form class="form-style" action="@routes.HomeController.createCatalog()" method="post">
+        <h2 class="form-heading">Create a catalog</h2>
+        <label for="catalog-name">Name</label><input type="text" name="name" id="catalog-name" class="form-control" placeholder="Ex. Catalog_1,Catalog_2..">
+        <label for="catalog-des">Description</label><textarea name="des" id="catalog-des" class="form-control" placeholder="Enter your catalog description"></textarea>
+        <button class="btn btn-primary btn-large btn-block">Create</button>
+    </form>
+  </div>

@@ -1,0 +1,85 @@
+@(report: FinancialReport)
+<h2 class="form-style"> Financial Report</h2>
+<div class="row">
+  <table class="table">
+    <thead>
+      <tr class="center-align">
+        <th>Income</th>
+        <th>Expense</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="info">
+        <td>
+          <table class="expand">
+            <tr class="info">
+              <td>Sale</td>
+              <td class="right-align">Revenue</td>
+            </tr>
+            @for(s <- report.getSaleReport) {
+              <tr class="info">
+                <td>@s.getSaleName</td>
+                <td class="right-align">@s.getTotalRev</td>
+              </tr>
+            }
+          </table>
+        </td>
+        <td>
+          <table class="expand">
+            <tr class="info">
+              <td>Receipt ID</td>
+              <td class="right-align">Cost</td>
+            </tr>
+            @for(p <- report.getAllReceipts){
+              <tr class="info">
+                <td>@p.getId</td>
+                <td class="right-align">@p.getTotalPrice</td>
+              </tr>
+            }
+          </table>
+        </td>
+      </tr>
+      <tr class="info">
+        <td>
+          <table class="expand">
+            <tr class="info">
+              <td><h5>Total Income:</h5></td>
+              <td class="right-align"><h5>@report.getTotalRev</h5></td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <table class="expand">
+            <tr class="info">
+              <td><h5>Total Expense:</h5></td>
+              <td class="right-align"><h5>@report.getPurchaseReport.getTotalCost</h5></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      @if(report.getBalance > 0) {
+        <tr class="success">
+          <td class="right-align"><h4>Total Balance:</h4></td>
+          <td><h4>@report.getBalance</h4></td>
+        </tr>
+      } else {
+        <tr class="danger">
+          <td class="right-align"><h4>Total Balance:</h4></td>
+          <td><h4>@report.getBalance</h4></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <button class="btn btn-large btn-primary btn-block form-style done">Done</button>
+</div>
+<script>
+        $(document).ready(function () {
+          $(".done").click(function () {
+            $(".nav-li").removeClass("active");
+            $("#home").addClass("active");
+            $(".data-content").load(encodeURI("/main/show/home"));
+          });
+        });
+</script>

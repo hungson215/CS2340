@@ -1,0 +1,249 @@
+@(user:User)(cart:Cart)
+
+<!DOCTYPE html>
+<html lang="en">
+@header("main")
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/main/show/profile"><i class="glyphicon glyphicon-user"></i></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active nav-li home" id="@if(user.isSuperUser){superuser}else{none}"><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
+                    @if(user.isSellAdmin || user.isSuperUser) {
+                    <li class="nav-li dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sale Admin<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            @if(!user.getSales.isEmpty) {
+                                @for(i <- user.getSales){
+                                    <li class="catalog">
+                                        <a id="@i.getId" href="#">@if(i.isClosed){@i.getName <span class="close-catalog-indicator">[Closed]</span>} else{@i.getName}</a>
+                                    </li>
+                                }
+                            }else {
+                                <li class="no-catalog-msg">&lt No Catalog &gt</li>
+                            }
+                                <li role="separator" class="divider"></li>
+                            <li><a id="create-catalog" href="#">Create a new Catalog</a></li>
+                            @if(!user.getSales.isEmpty) {
+                                <li><a id="print-tags" href="#">Print Tags</a> </li>
+                                <li><a id="close-sale" href="#">Close a Sale</a> </li>
+                                <li><a id="assign-role" href="#">Assign role</a> </li>
+                                <li><a id="sale-report" href="#">Sale Report</a></li>
+                            }
+							@if(user.isLoginAdmin) {
+                            	<li><a id="user-list" href="@routes.HomeController.showUsers">User List</a></li>
+							}
+                        </ul>
+                    </li>}
+                    <li class="nav-li" id="buy-catalog"><a  href="#">Buy</a></li>
+
+                    @if(user.isBookKeeper|| user.isSuperUser) {
+                        <li class="nav-li dropdown" id="book-keeper">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Book-Keeper</a>
+                            <ul class="dropdown-menu" role="menu">
+                                @if(user.getSales(models.User.Role.BOOK_KEEPER) == null){
+                                    <li class="no-catalog-msg">&lt No Catalog &gt</li>
+                                } else {
+                                    @for(i <- user.getSales(models.User.Role.BOOK_KEEPER)) {
+                                        <li class="book-keeper-catalog">
+                                            <a id="@i.getUserId" href="#">@if(i.isClosed) {@i.getName <span class="close-catalog-indicator"> [Closed]</span>
+                                            } else {
+                                                @i.getName
+                                            }</a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                    }
+                    @if(user.isCashier || user.isSuperUser) {
+                        <li class="nav-li" id="cashier">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cashier</a>
+                            <ul class="dropdown-menu" role="menu">
+                            @if(user.getSales(models.User.Role.CASHIER) == null){
+                                <li class="no-catalog-msg">&lt No Catalog &gt</li>
+                            } else {
+                                @for(i <- user.getSales(models.User.Role.CASHIER)) {
+                                    <li class="cashier-catalog">
+                                        <a id="@i.getId" href="#">@if(i.isClosed) {@i.getName <span class="close-catalog-indicator"> [Closed]</span>
+                                        } else {
+                                            @i.getName
+                                        }</a>
+                                    </li>
+                                }
+                            }
+                            </ul>
+                        </li>
+                    }
+                    @if(user.isClerk || user.isSuperUser) {
+                        <li class="nav-li dropdown" id="clerk">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Clerk</a>
+                            <ul class="dropdown-menu" role="menu">
+                                @if(user.getSales(models.User.Role.CLERK) == null){
+                                    <li class="no-catalog-msg">&lt No Catalog &gt</li>
+                                } else {
+                                    @for(i <- user.getSales(models.User.Role.CLERK)) {
+                                        <li class="clerk-catalog">
+                                            <a id="@i.getId" href="#">@if(i.isClosed) {@i.getName <span class="close-catalog-indicator"> [Closed]</span>
+                                            } else {
+                                                @i.getName
+                                            }</a>
+                                        </li>
+                                    }
+                                }
+                                <li><a id="clerk-print-tags" href="#">Print Tags</a> </li>
+                                <li><a id="clerk-sale-report" href="#">Sale Report</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if(user.isSeller || user.isSuperUser) {
+                        <li class="nav-li dropdown" id="seller">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Seller</a>
+                            <ul class="dropdown-menu" role="menu">
+                                @if(user.getSales(models.User.Role.SELLER) == null){
+                                    <li class="no-catalog-msg">&lt No Catalog &gt</li>
+                                } else {
+                                    @for(i <- user.getSales(models.User.Role.SELLER)) {
+                                        <li class="seller-catalog">
+                                            <a id="@i.getId" href="#">@if(i.isClosed) {@i.getName <span class="close-catalog-indicator">
+                                                [Closed]</span>
+                                            } else {
+                                                @i.getName
+                                            }</a>
+                                        </li>
+                                    }
+                                    <li role="separator" class="divider"></li>
+                                    <li><a id="seller-print-tags" href="#">Print Tags</a> </li>
+                                    <li><a id="seller-sale-report" href="#">Sale Report</a></li>
+                                    <li><a id="seller-financial-report" href="#">FinancialReport</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    <li class="nav-li dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Report</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a id="purchase-history" href="#">Purchase History</a> </li>
+                            <li><a id="financial-report" href="#">Financial Report</a> </li>
+                        </ul>
+                    </li>
+					<li class="nav-li" id="donate"><a href="#">Donate</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-li" id="shopping-cart">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                            <span class="badge label label-info" id="item-in-cart">@cart.getItems.size()</span>
+                        </a></li>
+                    <li class="nav-li"><a href="@routes.HomeController.logout()"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container data-content">
+    </div>
+
+    <script>
+        $(document).ready(function () {
+                $(".data-content").load(encodeURI("/main/show/home"));
+            $(".home").click(function () {
+                $(".data-content").load(encodeURI("/main/show/home"));
+            });
+            //Hide quantity indicator when cart is empty
+            if(parseInt($("#item-in-cart").text())== 0) {
+                $("#item-in-cart").hide();
+            }
+            //Highlight navigation item
+            $(".nav-li").click(function () {
+                $(".nav-li").removeClass("active");
+                $(this).addClass("active");
+                if(!$(this).is(".dropdown")) {
+                    $(".catalog").removeClass("active");
+                }
+            });
+            //make the catalog active and render all the items in selected catalog(finished)
+            $(".catalog").click(function () {
+                $(".catalog").removeClass("active");
+                $(this).addClass("active");
+                var url = encodeURI("/main/catalog/"+ $(this).children('a').attr('id'));
+                $(".data-content").load(url);
+            });
+            $("#create-catalog").click(function () {
+                $(".data-content").load("/main/show/create_catalog");
+            });
+            $("#shopping-cart").click(function () {
+                $(".data-content").load(encodeURI("/main/show/cart"));
+            });
+			$("#buy-catalog").click(function () {
+                $(".data-content").load(encodeURI("/main/show/buy"));
+            });
+            $("#print-tags").click(function () {
+                $(".data-content").load("/main/print_tag/"+ $(".catalog.active").children('a').attr('id'));
+            });
+          $("#close-sale").click(function () {
+              $(".data-content").load(encodeURI("/main/show/close_sale"));
+          });
+            $("#assign-role").click(function () {
+                $(".data-content").load(encodeURI("/main/role_assign"));
+            });
+            $("#sale-report").click(function () {
+                $(".data-content").load(encodeURI("/main/show/sale_report"));
+            });
+            $("#purchase-history").click(function () {
+                $(".data-content").load(encodeURI("/main/show/purchase_history"));
+            });
+            $("#financial-report").click(function () {
+                $(".data-content").load(encodeURI("/main/show/financial_report"));
+            });
+            $(".book-keeper-catalog").click(function () {
+                $(".book-keeper-catalog").removeClass("active");
+                $(this).addClass("active");
+                var id = $(this).children('a').attr("id");
+                $(".data-content").load("/main/financial_report/" + id);
+            });
+            $(".seller-catalog").click(function () {
+                $(".seller-catalog").removeClass("active");
+                $(this).addClass("active");
+                $(".data-content").load( encodeURI("/main/catalog/"+ $(this).children('a').attr('id')));
+            });
+            $("#seller-print-tags").click(function () {
+                $(".data-content").load("/main/print_tag/"+ $(".seller-catalog.active").children('a').attr('id'));
+            });
+            $("#seller-sale-report").click(function () {
+                $(".data-content").load(encodeURI("/main/seller/sale_report"));
+            });
+            $("#seller-financial-report").click(function () {
+                $(".data-content").load(encodeURI("/main/seller/financial_report"));
+            });
+            $(".cashier-catalog").click(function () {
+                var id = $(this).children('a').attr("id");
+                $(".data-content").load(encodeURI("/main/sale_report/" + id));
+            });
+            $(".clerk-catalog").click(function () {
+                $(".clerk-catalog").removeClass("active");
+                $(this).addClass("active");
+                var id = $(this).children('a').attr("id");
+                $(".data-content").load(encodeURI("/main/clerk/catalog/"+id));
+            });
+            $("#clerk-print-tags").click(function () {
+                $(".data-content").load("/main/print_tag/"+ $(".clerk-catalog.active").children('a').attr('id'));
+            });
+            $("#clerk-sale-report").click(function () {
+                $(".data-content").load(encodeURI("/main/clerk/sale_report"));
+            });
+			$("#donate").click(function () {
+				$(".data-content").load(encodeURI("/main/show/donate"));
+			});
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+@(cataid:Int)
+      <div class="row">
+          <div class="col-sm-3 col-md-3">
+              <img src="@routes.Assets.versioned("images/placeholder_img.png")" id="item-img">
+          </div>
+          <div class="col-sm-4 col-md-4">
+            <form id="add-item-form">
+              <h1 class="form-heading">Add new item</h1>
+              <ul id="item-info">
+                <li><label class="item-label" for="item-name">Item name:</label><input type="text" name="name" id="item-name" placeholder="Ex. Iphone, Ipad,.."></li>
+                <li><label class="item-label" for="img-url">Image url:</label><input type="text" name="img_url" id="img-url" placeholder="Ex.http://i.ebayimg.com/images/g/MMgAAOSwQgpW~uey/s-l500.jpg"></li>
+                <li><label class="item-label" for="item-price">Price $:</label><input type="text" name="price" id="item-price"></li>
+                <li><label class="item-label" for="item-condition">Condition:</label><input type="text" name="condition" id="item-condition" placeholder="Ex. new,used,refurbished"></li>
+                <li><label class="item-label" for="item-inventory">Inventory:</label><input type="text" name="inventory" id="item-inventory"></li>
+                <li><label class="item-label" for="item-des">Description:</label><textarea name="des" id="item-des"></textarea></li>
+              </ul>
+            </form>
+              <button class="btn btn-primary btn-large btn-block" id="item-create">Create</button>
+        </div>
+      </div>
+    <script>
+      $(document).ready(function () {
+        $("#img-url").change(function () {
+            $("#item-img").attr("src", $(this).val());
+        });
+        $("#item-create").click(function () {
+            var data = $("form").serialize();
+            var id = @cataid;
+            $.post("/main/add_item/"+id,data,function () {
+                $(".data-content").load(encodeURI("/main/catalog/" + id));
+            });
+        });
+      });
+    </script>

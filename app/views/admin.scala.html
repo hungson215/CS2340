@@ -1,0 +1,68 @@
+@(users:java.util.ArrayList[User])
+<div class="row">
+    <div class="form-style">
+        <h1 class="form-heading">User Privilege Management</h1>
+    </div>
+</div>
+<div class="row table-responsive">
+    <form id="privilege" action="">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Is Locked?</th>
+                    <th>Super User</th>
+                    <th>Seller Admin</th>
+                    <th>Seller</th>
+                    <th>Book Keeper</th>
+                    <th>Cashier</th>
+                    <th>Clerk</th>
+					<th>Login Admin</th>
+                    <th>Guest</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(u <- users) {
+                    <tr>
+                        <td>@u.getId</td>
+                        <td>@u.getUsername</td>
+                        <td>@u.getEmail</td>
+                        <td>@u.getPhone</td>
+                        <td><input type="checkbox" name="islocked@u.getId"    id="islocked-@u.getId" class="account-type role@u.getId" @if(u.isLocked){checked} /></td>
+                        <td><input type="checkbox" name="super-user@u.getId"  id="super-@u.getId"    class="account-type role@u.getId" @if(u.isSuperUser){checked} /></td>
+                        <td><input type="checkbox" name="sell-admin@u.getId"  id="admin-@u.getId"    class="account-type role@u.getId" @if(u.isSellAdmin){checked} /></td>
+                        <td><input type="checkbox" name="seller@u.getId"      id="seller-@u.getId"   class="account-type role@u.getId" @if(u.isSeller){checked}    /></td>
+                        <td><input type="checkbox" name="book-keeper@u.getId" id="book-@u.getId"     class="account-type role@u.getId" @if(u.isBookKeeper){checked}/></td>
+                        <td><input type="checkbox" name="cashier@u.getId"     id="cashier-@u.getId"  class="account-type role@u.getId" @if(u.isCashier){checked}   /></td>
+                        <td><input type="checkbox" name="clerk@u.getId"       id="clerk-@u.getId"    class="account-type role@u.getId" @if(u.isClerk){checked}     /></td>
+						<td><input type="checkbox" name="login-admin@u.getId"       id="login-@u.getId"    class="account-type role@u.getId" @if(u.isLoginAdmin){checked}     /></td>
+                        <td><input type="checkbox" name="guest@u.getId"                              class="account-type role@u.getId" checked disabled/></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+    <button class="btn btn-large btn-block btn-primary form-style" data-toggle="modal" data-target="#added-modal" id="admin-save">Save</button>
+    <div id ="added-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content alert-success">
+                <div class="modal-body">
+                    <h3 class="form-style"><p>Saved<i class="glyphicon glyphicon-ok "></i></p></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function () {
+    $("#added-modal").on("hidden.bs.modal",function () {
+        var details = $("#privilege").serialize();
+        $.post(encodeURI("/main/privilege"),details,function () {
+            $(".data-content").load(encodeURI("/main/show/superuser"));
+        });
+    });
+});
+</script>

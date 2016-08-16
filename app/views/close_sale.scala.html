@@ -1,0 +1,63 @@
+@(sales: java.util.ArrayList[Catalog])
+
+<div class="row">
+  <h2 class="form-style" id="close-sale-header">Close a Sale</h2>
+</div>
+<div class="row">
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>#items for Sale</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for(i <- 0 to sales.length-1){
+      @if(!sales.get(i).isClosed()) {
+        <tr class="close-catalog" data-toggle="modal" data-target="#catalog@sales.get(i).getId">
+          <td>@sales.get(i).getId</td>
+          <td>@sales.get(i).getName</td>
+          <td>@sales.get(i).getDes</td>
+          <td>@if(sales.get(i).getItems != null) {@sales.get(i).getItems.length} else {0}</td>
+        </tr>
+        <div id="catalog@sales.get(i).getId" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-title">
+                <h3 id="warning-msg"><strong>!!Warning!!</strong></h3>
+              </div>
+              <div class="modal-body" id="close-sale-body">
+                <p>You are about to close this sale</p>
+                <p><strong>@sales.get(i).getName</strong></p>
+                <p>Are you sure you want to close this sale?</p>
+              </div>
+              <div class="modal-footer" id="close-sale-footer">
+                <button class="btn btn-large btn-primary" data-dismiss="modal">No</button>
+                <button class="btn btn-large btn-primary close-catalog-yes" id="@sales.get(i).getId" data-dismiss="modal">Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    }
+  </tbody>
+</table>
+</div>
+<script>
+  $(document).ready(function () {
+    $(".close-catalog-yes").click(function () {
+      $(".modal").on("hidden.bs.modal",function () {
+        var cataid = $(this).attr("id").substring(7);
+        $(".catalog > a").each(function () {
+          if($(this).attr("id") == cataid) {
+            var content = $(this).html();
+            $(this).html(content + " <span class=\"close-catalog-indicator\">[Closed]</span>");
+          }
+        });
+        $(".data-content").load(encodeURI("/main/close_sale/" + cataid));
+      });
+    });
+  });
+</script>

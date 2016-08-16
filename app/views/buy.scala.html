@@ -1,0 +1,78 @@
+@(items:java.util.ArrayList[ItemInfo])
+
+<div class="input-group">
+	<input type="text" class="form-control" id="search-buy" placeholder="Search for...">
+ 	<span class="input-group-btn">
+ 	<button class="btn btn-default" id="btn-searchbuy" type="button"><i class="glyphicon glyphicon-search"></i></button>
+ 	</span>
+</div>
+@if(!items.isEmpty) {
+  @for(i <- 0 to items.length - 1) {
+    @if(i % 3 == 0) {
+      <div class="row">
+    }
+    <div class="col-sm-4">
+      @if(items.get(i).getInventory != 0){
+      	<div class="panel panel-primary sale-item">
+	  } else {
+      	<div class="panel panel-default">
+      }
+        <div class="panel-heading">@if(items.get(i).getInventory == 0){SOLD OUT:}@items.get(i).getName</div>
+        <div class="panel-body"><img src="@items.get(i).getImg_url" onerror="altImg(this);" class="img-responsive"></div>
+        <div class="panel-footer">
+            <ul id="item-info">
+                <li><strong>Stock ID: </strong>@items.get(i).getId</li>
+                <li><strong>Price: </strong><span class="price">$@items.get(i).getPrice</span></li>
+		        <li><strong>Inventory: </strong>@items.get(i).getInventory</li>
+                <li><strong>Description: </strong>@items.get(i).getDes</li>
+            </ul>
+				@if(items.get(i).getInventory> 0) {
+            		<button class="btn btn-small btn-primary btn-block add-to-cart" id="@items.get(i).getId" data-toggle="modal" data-target="#added-modal">Add To Cart</button>
+				}
+            <div id ="added-modal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content alert-success">
+                        <div class="modal-body">
+                            <h3 class="form-style"><p>Item added<i class="glyphicon glyphicon-ok "></i></p></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+	</div>
+    @if((i+1) % 3 == 0) {
+      </div>
+    }
+  }
+} else {
+    <div class="form-style">
+       <h2 class="noitem-msg">Nothing to buy :(</h2>
+    </div>
+  }
+
+<script>
+ 	function altImg(img) {
+ 	  img.onError = null;
+ 	  img.src = "@routes.Assets.versioned("images/placeholder_img.png")";
+ 	  return true;
+ 	}
+ 	$(document).ready(function () {
+ 		$("#btn-searchbuy").click(function () {
+ 			$(".data-content").load("/main/search/" + $("#search-buy").val());
+ 		});
+        var itemid;
+        $(".add-to-cart").click(function () {
+            itemid = $(this).attr("id");
+        });
+        $("#added-modal").on("hidden.bs.modal",function () {
+            var cartItems = $("#item-in-cart");
+            var indicator = parseInt(cartItems.text()) + 1;
+            cartItems.text(indicator);
+            if(cartItems.is(":hidden")){
+                cartItems.show();
+            }
+            $.get("/main/add_to_cart/"+itemid);
+        });
+ 	});
+</script>

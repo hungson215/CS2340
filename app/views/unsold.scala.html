@@ -1,0 +1,41 @@
+@(items: java.util.ArrayList[ItemInfo])(user: User)
+<!DOCTYPE html>
+<html lang="en">
+    @header("Unsold Items")
+<body>
+    <div class="container">
+        <form class="form-style">
+            <h3 class="form-heading">Unsold Items</h3>
+        </form>
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for(i <- 0 to items.length - 1){
+                @if(items.get(i).getInventory > 0){
+                    <tr>
+                        <td>@items.get(i).getId</td>
+                        <td>@items.get(i).getName</td>
+                        <td>@items.get(i).getInventory</td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+        <form class="form-style">
+            <input type="button" class="btn btn-large btn-primary btn-block" value="Print this list" onClick="window.print()">
+        </form>
+        <form class="form-style">
+            <a class="btn btn-large btn-primary btn-block" href="https://www.freecycle.org">Post Unsold Items to Free Cycle</a>
+        </form>
+        <form class="form-style" action="@routes.HomeController.show("main")" method="get">
+            <button class="btn btn-large btn-primary btn-block" type="submit">Done</button>
+        </form>
+</div> <!-- /container -->
+</body>
+</html>

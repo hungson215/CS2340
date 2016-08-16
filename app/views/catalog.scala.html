@@ -1,0 +1,75 @@
+@(items:java.util.ArrayList[ItemInfo])(cata: Catalog)(viewOnly:Boolean)
+
+<div class="input-group">
+    <input type="text" class="form-control" id="search-query" placeholder="Search for...">
+    <span class="input-group-btn">
+        <button class="btn btn-default" id="btn-search" type="button"><i class="glyphicon glyphicon-search"></i></button>
+    </span>
+</div>
+    @if(!items.isEmpty) {
+        @for(i <- 0 to items.length - 1) {
+            @if(i % 4 == 0) {
+                <div class="row">
+                }
+            <div class="col-sm-3">
+                @if(cata.isClosed || viewOnly == true) {
+                    <div class="panel panel-default">
+                    }else{
+                    <div class="panel panel-primary sale-item">
+                    }
+            <div class="panel-heading"><span>@items.get(i).getName</span></div>
+            <div class="panel-body"><img src="@items.get(i).getImg_url" onerror="altImg(this);" class="img-responsive item-img"></div>
+            <div class="panel-footer">
+                <ul id="item-info">
+                    <li><strong>Stock ID: </strong><span id="item-id">@items.get(i).getId</span></li>
+                    <li><strong>Price: </strong>$@items.get(i).getPrice</li>
+                    <li><strong>Inventory: </strong>@items.get(i).getInventory</li>
+                </ul>
+            </div>
+            </div>
+            </div>
+                @if((i+1) % 4 == 0) {
+                </div>
+                }
+        }
+        @if(!items.isEmpty && !cata.isClosed && viewOnly==false) {
+            <div class="col-sm-3">
+                <div class="panel" >
+                    <div class="panel-body" id= "add-item-wrapper">
+                        <img src="@routes.Assets.versioned("images/add_item.png")" id="add-item-img" class="img-responsive img-circle add-item">
+                        <p><strong>Add Item</strong></p>
+                    </div>
+                </div>
+            </div>
+        }
+    }else {
+        <div class="row">
+            <h2 class="noitem-msg">You don't have anything for sale :(</h2>
+            <buton class="btn btn-large btn-primary add-item">Add item</buton>
+        </div>
+    }
+
+    <script>
+    //show default image if user does not supply image
+    function altImg(img) {
+        img.onError = null;
+        img.src = "@routes.Assets.versioned("images/placeholder_img.png")";
+        return true;
+    }
+    $(document).ready(function () {
+        $(".sale-item").click(function () {
+            $(".data-content").load("/main/update_item/"+ $(this).find("#item-id").text());
+        });
+    });
+    $(".add-item").click( function () {
+        $(".data-content").load("/main/add_item/@cata.getId");
+    });
+    $("#btn-search").click(function () {
+        var cataid =  $(".catalog.active").children('a').attr('id');
+        if($('#buy').is(".active")){
+            $(".data-content").load(encodeURI("/main/search/buy/-1/"+$("#search-query").val()));
+        } else {
+            $(".data-content").load(encodeURI("/main/search/sell/" +cataid+"/"+$("#search-query").val()));
+        }
+    });
+    </script>

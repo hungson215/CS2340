@@ -1,0 +1,21 @@
+@(message: String)(username:String)
+<!DOCTYPE html>
+<html lang="en">
+@header("Register")
+<body>
+    <div class="container">
+            <form class="form-style" action="@routes.HomeController.register()" method="post">
+                <h2 class="form-heading">Please Register</h2>
+                <p class="error-message"><strong>@message</strong></p>
+                <input type="text" name="username" id="reg-username" class="form-control" placeholder="Username" required autofocus/>
+                <input type="email" name="email" id="reg-email" class="form-control" placeholder="Email" required/>
+                <input type="password" name="password" id="reg-password" class="form-control" placeholder="Password" required/>
+                <input type="password" name="confirm_password" id="reg-confirm-password" class="form-control" placeholder="Confirm Password" required/>
+                <button class="btn btn-large btn-primary btn-block" type="submit">Register</button>
+            </form>
+            <form class="form-style" action="@routes.HomeController.index()" method="get">
+                <button class="btn btn-large btn-primary btn-block">Cancel</button>
+            </form>
+        </div> <!-- /container -->
+    </body>
+</html>

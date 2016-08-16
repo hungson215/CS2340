@@ -1,0 +1,44 @@
+@(totalCost:Double)(receipts: java.util.ArrayList[Receipt])(payments:java.util.HashMap[Integer,Payment])(user:User)
+<div class="row table-responsive">
+  <h2 class="form-style">Purchase History</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Receipt ID</th>
+      <th>Date</th>
+      <th>Payment</th>
+      <th>Cost</th>
+	  <th>Email Receipt</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for(r <-receipts){
+      <tr>
+		<form action="MAILTO:@user.getEmail" method="post" enctype="text/plain">
+        <td><input type="text" id="emailreceipt" name="Receipt ID " value=" @r.getId" readonly></td>
+        <td><input type="text" id="emailreceipt" name="Date Purchased " value=" @r.getDate.toString" readonly></td>
+        <td><input type="text" id="emailreceipt" name="Payment Type " value=" @payments.get(r.getPaymentId).getType" readonly></td>
+        <td><input type="text" id="emailreceipt" name="Total Price " value=" @r.getTotalPrice" readonly></td>
+		<td><button class="btn btn-large btn-primary btn-block form-style" type="submit" value="send">Send</button></td>
+		</form>
+      </tr>
+    }
+      <tr>
+        <td></td>
+        <td></td>
+        <td>Total Cost:</td>
+        <td>@totalCost</td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-large btn-block btn-primary form-style done">Done</button>
+</div>
+  <script>
+    $(document).ready(function () {
+      $(".done").click(function () {
+        $(".nav-li").removeClass("active");
+        $("#home").addClass("active");
+        $(".data-content").load(encodeURI("/main/show/home"));
+      });
+    });
+  </script>

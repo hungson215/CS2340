@@ -1,0 +1,42 @@
+@(item: ItemInfo)
+<div class="container-fluid">
+    <div clas="row">
+        <div class="col-sm-4 col-md-4">
+            <img src="@item.getImg_url" onerror="altImg(this);" id="item-img">
+        </div>
+        <div class="col-sm-4 col-md-4">
+            <form action="">
+                <ul id="item-info">
+                    <li><label class="item-label" for="item-name">Item name:</label><input type="text" name="name" id="item-name" value="@item.getName"></li>
+                    <li><label class="item-label" for="img-url">Image url:</label><input type="text" name="img_url" id="img-url" value="@item.getImg_url"></li>
+                    <li><label class="item-label" for="item-price">Price $:</label><input type="text" name="price" id="item-price" value="@item.getPrice"></li>
+                    <li><label class="item-label" for="item-inventory">Inventory:</label><input type="text" name="inventory" id="item-inventory" value="@item.getInventory"></li>
+                    <li><label class="item-label" for="item-des">Description:</label><textarea name="des" id="item-des">@item.getDes</textarea></li>
+                </ul>
+            </form>
+            <button id="item-save" class="btn btn-primary btn-large btn-block">Save</button>
+            <button id="item-back" class="btn btn-primary btn-large btn-block">Back</button>
+        </div>
+    </div>
+</div>
+<script>
+        $(document).ready(function () {
+            $("#img-url").change(function () {
+                $("#item-img").attr("src",$(this).val());
+            });
+            $("#item-save").click(function () {
+                var detail= $("form").serialize();
+                $.post("@routes.HomeController.updateItem(item.getId)",detail,function () {
+                    $(".data-content").load("/main/catalog/@item.getCatalogId");
+                });
+            });
+            $("#item-back").click(function () {
+                $(".data-content").load("@routes.HomeController.showCatalog(item.getCatalogId())");
+            });
+        });
+        function altImg(img) {
+            img.onError = null;
+            img.src = "@routes.Assets.versioned("images/placeholder_img.png")";
+            return true;
+        }
+</script>

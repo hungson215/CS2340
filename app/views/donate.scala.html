@@ -1,0 +1,21 @@
+<div class="row">
+          <form class="form-style">
+              	<h1 class="form-heading">Donate an item</h1>
+			 	 <ul id="item-info">
+	  		  		<li><label class="item-label" for="item-name">Item name:</label><input type="text" name="name" id="item-name" placeholder="Ex. Iphone, Ipad,.."></li>
+	    		  	<li><label class="item-label" for="item-des">Description:</label><textarea name="des" id="item-des"></textarea></li>
+	    		 	<li><label class="item-label" for="charity-name">Charity:</label><input type="text" name="charity" id="charity-name" placeholder="Ex. Salvation Army"></li>
+	  			</ul>
+		  </form>
+			  <button class="btn btn-primary btn-large btn-block letter" id="letter">Create</button>
+        </div>
+	  <script>
+	      $(document).ready(function () {
+	          $(".letter").click(function () {
+				  var data = $("form").serialize();
+	              $.post(encodeURI("/main/letter"),data,function(){
+					  $(".data-content").load("/main/letter");
+				  });
+	          });
+	      });
+	  </script>

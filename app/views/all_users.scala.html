@@ -1,0 +1,31 @@
+@(users:java.util.ArrayList[User])(current:User)
+<html>
+    <head>
+        @header("User List")
+    </head>
+    <body>
+        <form class="form-style">
+            <h2 class="form-heading">All Users</h2>
+            @for(i <- users) {
+                <p><strong>Name:</strong> @i.getUsername</p>
+                <p><strong>Access:</strong> @for(u <- i.getRoles){@u,}</p>
+                @if(i.isLocked == false) {
+                    <p><strong>Status:</strong> Active</p>
+                } else {
+					<p id="locked"><strong>Status:</strong> Locked</p>
+					<form class="form-style" action="@i.setLock(false))" method="post">
+						<button type="button" onclick="unlockUser()">Unlock user</button>
+					</form>
+                }
+                ____________________________
+            }
+        </form>
+        <form class="form-style" action="@routes.HomeController.show("main")" method="get">
+            <button class="btn btn-primary btn-large btn-block" type="submit">Apply Changes</button>
+        </form>
+        <script>
+                function unlockUser() {
+                    document.getElementById("locked").innerHTML = "<strong>Status:</strong> Unlocked*";
+
+                }
+        </script>

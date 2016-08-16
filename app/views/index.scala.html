@@ -1,0 +1,17 @@
+@*
+ * This template takes a single argument, a String containing a
+ * message to display.
+ *@
+<!DOCTYPE html>
+<html lang="en">
+    @header("Welcome")
+    <body>
+        <div class="container">
+            <form class="form-style" action="@routes.HomeController.index()" method="get">
+                <h2 class="form-heading">Welcome</h2>
+                <button class="btn btn-large btn-primary btn-block" type="submit" name="login">Login</button>
+                <button class="btn btn-large btn-primary btn-block" type="submit" name="register">Register</button>
+            </form>
+        </div>
+    </body>
+</html>

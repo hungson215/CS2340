@@ -1,0 +1,19 @@
+@(error_message: String)(username:String)(password:String)
+<!DOCTYPE html>
+<html lang="en">
+    @header("login")
+    <body>
+        <div class="container">
+            <form class="form-style" action="@routes.HomeController.login()" method="post">
+                <h2 class="form-heading">Please Login</h2>
+                <p class="error-message"><strong>@error_message</strong></p>
+                <input type="text" name="username" class="form-control" placeholder="Username" value="@username" required autofocus>
+                <input type="password" name="password" class="form-control" placeholder="Password" value="@password" required>
+                <button class="btn btn-large btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+            <form class="form-style" action="@routes.HomeController.index()" method="get">
+                <button class="btn btn-large btn-primary btn-block" type="submit">Cancel</button>
+            </form>
+        </div> <!-- /container -->
+    </body>
+</html>

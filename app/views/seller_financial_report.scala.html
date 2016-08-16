@@ -1,0 +1,36 @@
+@(users:java.util.HashMap[Integer,User])(sales:java.util.ArrayList[Catalog])
+<div class="row table-responsive">
+  <div class="form-style">
+    <h2 class="form-heading">Financial Report</h2>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Sell Admin</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Report</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(c <- sales){
+        <tr>
+          <td>@c.getId</td>
+          <td>@users.get(c.getUserId).getUsername</td>
+          <td>@c.getName</td>
+          <td>@c.getDes</td>
+          <td><button class="btn btn-large btn-block btn-primary view-report" id="@c.getUserId">Report</button></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+<script>
+        $(document).ready(function () {
+          $(".view-report").click(function () {
+            var id = $(this).attr("id");
+            $(".data-content").load(encodeURI("/main/financial_report/"+id));
+          });
+        });
+</script>

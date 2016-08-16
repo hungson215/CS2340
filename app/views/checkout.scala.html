@@ -1,0 +1,133 @@
+@(cart:Cart)(user:User)(payments:java.util.ArrayList[Payment])
+    <div class="form-style">
+        <h2 class="form-heading">Checkout</h2>
+        <ul id="item-info">
+            <li><label class="item-label" for="name">Name:</label><input type="text" name="name" id="name" value="@user.getUsername" required></li>
+            <li><label class="item-label" for="phone">Phone:</label><input type="text" name="phone" id="phone" value="@user.getPhone" required></li>
+            <li><label class="item-label" for="email">Email:</label><input type="email" name="email" id="email" value="@user.getEmail" required> </li>
+        </ul>
+        <h3 class="form-heading">Total: @cart.getTotalPrice</h3>
+        <form id="payment-form">
+            <h3 class="form-heading">Payment Type</h3>
+            <div class="payment-type">
+                <label for="payment">Select your Payment:</label>
+                <input type="radio" name="payment"  value="Credit" id="credit"><label for="credit" >Credit Card</label>
+                <input type="radio" name="payment"  value="Check"  id="check"><label for="check">Check</label>
+                <input type="radio" name="payment"  value="Cash"    id="cash"><label for="cash">Cash</label>
+            </div>
+            <div id="credit-info" class="collapse">
+            @if(payments.isEmpty){
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><label for="card-type">Card Type:</label></td>
+                            <td class="credit-input">
+                                <input type="radio" name="cardtype" value="Visa" id="visa"/><label for="visa">Visa</label>
+                                <input type="radio" name="cardtype" value="Master" id="master"/><label for="master">Master</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="cardname">Card Name:</label></td>
+                            <td class="credit-input"><input type="text" size="16" maxlength="30" name="cardname" id="cardname"/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="cardnum">Card Number:</label></td>
+                            <td class="credit-input"><input type="text" name="cardnum" size="16" maxlength="16" id="cardnum"/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="cardcvv">CVV:</label></td>
+                            <td class="credit-input"><input type="password" maxlength="3" size="3" name="cardcvv" id="cardcvv"/></td>
+                        </tr>
+                        <tr>
+                            <td class="left-align"><label for="expMonth">Exp Month:</label></td>
+                            <td class="left-align"> <select name="expmonth" id="expMonth">
+                                <option value="1">Jan</option>
+                                <option value="2">Feb</option>
+                                <option value="3">Mar</option>
+                                <option value="4">Apr</option>
+                                <option value="5">May</option>
+                                <option value="6">Jun</option>
+                                <option value="7">Jul</option>
+                                <option value="8">Aug</option>
+                                <option value="9">Sep</option>
+                                <option value="10">Oct</option>
+                                <option value="11">Nov</option>
+                                <option value="12">Dec</option>
+                            </select>
+                                <label for="expYear">Exp Year:</label>
+                                <select name="expyear" id="expYear">
+                                @for(y <- 2016 until 2026){
+                                    <option value="@y">@y</option>
+                                }
+                                </select></td>
+                        </tr>
+                    </tbody>
+                </table>
+            }else{
+                <label for="select-credit">Select Credit:</label>
+                <select id="select-credit" name="paymentchoice">
+                @for(p <- payments) {
+                    <option value="@p.getId">@p.getCardNum.substring(12)</option>
+                }
+                </select>
+            }
+            </div>
+            <div id="check-info" class="collapse">
+                @if(payments.isEmpty) {
+                    <table class="table">
+                        <tr>
+                            <td><label for="check-nickname">Payment nickname:</label></td>
+                            <td><input type="text" name="cardname" id="check-nickname"/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="routing">Routing</label></td>
+                            <td><input type="text" name="routing" id="routing" size="9" maxlength="9"/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="account">Account</label></td>
+                            <td><input type="text" name="account" id="account" size="9" maxlength="9"/></td>
+                        </tr>
+                    </table>
+                } else {
+                    <label for="select-checking">Select Account:</label>
+                    <select id="select-checking" name="paymentchoice">
+                    @for(p <- payments) {
+                        <option value="@p.getId">@p.getCardName</option>
+                    }
+                    </select>
+                }
+            </div>
+        </form>
+    </div>
+    <div class="form-style" >
+        <button class="btn btn-large btn-primary btn-block purchase">Purchase</button>
+        <button class="btn btn-large btn-primary btn-block checkout-cancel">Cancel</button>
+    </div>
+
+<script>
+    $(document).ready(function () {
+        $(".checkout-cancel").click(function () {
+            $(".data-content").load(encodeURI("/main/show/cart"));
+        });
+        $(".purchase").click(function () {
+            var details= $("#payment-form").serialize();
+            $("#item-in-cart").text("0");
+            $("#item-in-cart").hide();
+            $.post(encodeURI("/main/purchase"), details, function (data) {
+                $(".data-content").load(encodeURI("/main/receipt/" + data));
+            });
+        });
+        $("#credit").click(function () {
+            $("#credit-info").collapse("show");
+            $("#check-info").collapse("hide");
+        });
+        $("#check").click(function () {
+            $("#credit-info").collapse("hide");
+            $("#check-info").collapse("show");
+        });
+        $("#cash").click(function () {
+            $("#credit-info").collapse("hide");
+            $("#check-info").collapse("hide");
+        });
+    });
+</script>

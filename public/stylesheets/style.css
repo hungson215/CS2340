@@ -1,0 +1,239 @@
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
+}
+.error-message{
+    color: red;
+}
+.logout-control{
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom:10px;
+}
+.form-style{
+    max-width:40%;
+    padding: 3px;
+    margin: 0 auto;
+    text-align: center;
+}
+.form-heading{
+    margin-bottom: 10px;
+}
+.form-style .form-control{
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+    display: inline-block;
+    width:100%;
+}
+.form-control:focus {
+    z-index: 2;
+}
+.form-style input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-style input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.form-style #email,
+.form-style #password{
+    margin-bottom: -1px;
+    margin-top: -1px;
+    border-radius: 0;
+}
+#avatar-pic {
+    max-width: 20%;
+    max-height: 20%;
+    margin:0 auto;
+}
+.profile-pic{
+    text-align: center;
+    margin: 0 auto 30px;
+}
+#reg-email, #reg-password{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-bottom: -1px;
+    margin-top: -1px;
+}
+#reg-username{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: -1px;
+    margin-top: 15px;
+
+}
+#reg-confirm-password{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-top: -1px;
+    margin-bottom: 15px;
+}
+#profile-phone, #profile-address, #profile-email,
+#profile-username, #profile-account-type{
+    border: none;
+    box-shadow: none;
+    outline: none;
+    background-color:inherit;
+}
+#profile-address{
+    width: 100%;
+    height: 100%;
+}
+.navbar{
+    top: 0;
+    border-radius: 0;
+    position: fixed;
+    width:100%;
+    z-index: 10;
+}
+.data-content{
+    margin-top: 100px;
+}
+#item-info{
+    list-style-type: none;
+}
+.item-label{
+    display: inline-block;
+    text-align: right;
+    width: 100px;
+}
+#item-img{
+    max-width: 300px;
+    max-height: 300px;
+    padding: 30%;
+}
+#item-des{
+    width: 100%;
+    height: 200px;
+}
+.sale-item:hover,
+#add-item-img:hover{
+    border: #373BFF;
+    box-shadow: 0 0 15px #373BFF;
+    border-radius: 5px;
+}
+#add-item-img{
+    width:50%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+.no-catalog-msg{
+    margin-left: 5%;
+    color: #aeaeae;
+    text-align: center;
+}
+.soldpanel-heading{
+	background-color: grey;
+	padding: 11px;
+}
+.tag-info{
+    text-align: center;
+}
+.tag-barcode{
+    margin: 0 auto;
+}
+.itemtag:hover{
+    cursor: pointer;
+}
+.price{
+    font-size: large;
+    color: red;
+}
+#search-buy, #search-query {
+	position: fixed;
+	top: 9px;
+	right: 227px;
+	width: 181px;
+	z-index: 20;
+}
+#btn-searchbuy, #btn-search {
+	top: 9px;
+	position: fixed;
+	right: 188px;
+	z-index: 20;
+}
+.close-catalog:hover {
+    cursor: pointer;
+    cursor: hand;
+}
+#close-sale-header{
+    padding-bottom: 40px;
+}
+#close-sale-body,#close-sale-footer{
+    text-align: center;
+}
+.close-catalog-indicator{
+    color: crimson;
+}
+thead {
+    background-color: #49abff;
+    color: white
+}
+#add-item-wrapper{
+    text-align: center;
+    font-size: xx-large;
+    box-shadow: none;
+    background-color: transparent;
+}
+#warning-msg{
+    color: white;
+    background-color:crimson ;
+    text-align: center;
+}
+.cart-img-thumbnail{
+    width: 50px;
+    height: 50px;
+}
+.total-price{
+    text-align: right;
+    font-size: large;
+}
+#added-modal{
+    top: 30%;
+}
+#added-modal .modal-dialog{
+    width: 23%;
+}
+#added-modal .modal-dialog .modal-content .modal-body{
+    padding: 0;
+}
+.table-cart{
+    width: 100%;
+    max-width: 100%;
+}
+.credit-input{
+    text-align: left;
+}
+ul{
+   list-style-type: none;
+}
+.center-align{
+    text-align: center;
+}
+.right-align{
+    text-align: right;
+}
+.expand{
+    width: 100%;
+}
+#emailreceipt {
+	border: none;
+    background-color: transparent;
+}
+
+.left-align{
+    text-align: left;
+}

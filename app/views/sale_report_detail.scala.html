@@ -1,0 +1,53 @@
+@(revenue: Double)(trans: java.util.ArrayList[Transaction])(sale:Catalog)
+
+<div class="row">
+  <h2 class="form-style">Transaction report</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Transaction ID</th>
+        <th>Item ID</th>
+        <th>Picture</th>
+        <th>Item name</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(t <- trans) {
+        <tr>
+          <td>@t.getId</td>
+          <td>@t.getItemId</td>
+          <td><img class="img-responsive cart-img-thumbnail" src="@sale.getItems.get(t.getItemId).getImg_url"/></td>
+          <td>@sale.getItems.get(t.getItemId).getName</td>
+          <td>@t.getQuantity</td>
+          <td>@t.getTotalPrice</td>
+        </tr>
+      }
+
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Total revenue:</td>
+        <td>@revenue</td>
+      </tr>
+    </tbody>
+  </table>
+    <button class="btn btn-large btn-primary btn-block form-style unsold">View Unsold Items</button>
+    <button class="btn btn-large btn-primary btn-block form-style done">Done</button>
+</div>
+<script>
+        $(document).ready(function () {
+          $(".done").click(function () {
+            $(".nav-li").removeClass("active");
+            $("#home").addClass("active");
+            $(".data-content").load(encodeURI("/main/show/home"));
+          });
+            $(".unsold").click(function () {
+                var saleid = @sale.getId;
+                $(".data-content").load(encodeURI("/main/unsold/" + saleid));
+            });
+        });
+</script>
